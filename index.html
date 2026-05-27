@@ -45,26 +45,40 @@
             padding: 20px 10px;
         }
 
+        /* Balanced 3-Column Grid for Logo Alignment */
         .header-container {
             max-width: 1200px;
             margin: 0 auto;
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            justify-content: space-between;
             gap: 20px;
         }
 
-        .logo-group {
+        /* Left aligned group: AIU first, then transformED */
+        .left-logos {
             display: flex;
             align-items: center;
-            flex-wrap: wrap;
-            gap: 30px;
+            gap: 25px;
+            justify-content: flex-start;
         }
 
-        /* Logo Hierarchies */
+        /* Centered group: STEAM Logo */
+        .center-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Invisible spacer to anchor the right side for true alignment */
+        .right-space {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        /* Logo Sizing Hierarchy */
         .logo-steam {
-            max-height: 110px; /* Most prominent */
+            max-height: 120px; /* Most prominent */
             height: auto;
             width: auto;
         }
@@ -79,6 +93,24 @@
             max-height: 45px; /* Tertiary prominence */
             height: auto;
             width: auto;
+        }
+
+        /* Responsive Header Adjustments for Smaller Screens */
+        @media (max-width: 900px) {
+            .header-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .left-logos {
+                justify-content: center;
+                order: 2;
+            }
+            .center-logo {
+                order: 1;
+            }
+            .right-space {
+                display: none;
+            }
         }
 
         /* --- MAIN LAYOUT --- */
@@ -207,12 +239,12 @@
             position: relative;
             width: 100%;
             overflow: hidden;
-            padding-top: 100%; /* Keeps Google Form responsive */
+            padding-top: 120%; /* Increased padding to safely frame long forms gracefully */
         }
 
         @media (min-width: 768px) {
             .iframe-container {
-                padding-top: 75%;
+                padding-top: 100%;
             }
         }
 
@@ -241,13 +273,21 @@
 
     <header role="banner">
         <div class="header-container">
-            <div class="logo-group">
-                <img src="Lending Library Logo (1).png" alt="STEAM Lending Library Logo" class="logo-steam">
-                
+            
+            <div class="left-logos">
                 <img src="AIU-logo-Black-2021 copy - Copy.png" alt="Allegheny Intermediate Unit Logo" class="logo-aiu">
-                
                 <img src="TransformED-logo-color.png" alt="transformED Logo" class="logo-transformed">
             </div>
+            
+            <div class="center-logo">
+                <img src="Lending Library Logo (1).png" alt="STEAM Lending Library Logo" class="logo-steam">
+            </div>
+
+            <div class="left-logos right-space" aria-hidden="true">
+                <img src="AIU-logo-Black-2021 copy - Copy.png" alt="" class="logo-aiu">
+                <img src="TransformED-logo-color.png" alt="" class="logo-transformed">
+            </div>
+            
         </div>
     </header>
 
@@ -295,7 +335,7 @@
             <p style="margin-bottom: 20px;">Please complete the secure Google Form below to initiate your request. Our staff will process requests in the order received.</p>
             
             <div class="iframe-container">
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfXXXXXXXXXXXXX/viewform?embedded=true" title="Lending Library Request Intake Form">Loading Form…</iframe>
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfNRRKV1t6f9tN9wMwe_F9t1HXeoDvBEVIFXo8qcxn6-KXVhQ/viewform?embedded=true" title="Lending Library Request Intake Form">Loading Form…</iframe>
             </div>
         </section>
     </main>
