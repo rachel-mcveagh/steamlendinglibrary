@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>STEAM Lending Library</title>
+    <style>
+        /* --- ACCESSIBLE & MODERN DESIGN SYSTEM --- */
+        :root {
+            --primary-color: #0056b3; /* High-contrast accessible blue */
+            --text-color: #1a1a1a;    /* Off-black for optimal readability */
+            --bg-color: #ffffff;
+            --card-bg: #f8f9fa;
+            --border-color: #d1d5db;
+            --available-bg: #d4edda;
+            --available-text: #155724;
+            --unavailable-bg: #e2e8f0;
+            --unavailable-text: #334155;
+            --focus-outline: #ffbf47; /* High-visibility focus color */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+        }
+
+        /* Focus styles for keyboard accessibility (WCAG 2.2) */
+        *:focus-visible {
+            outline: 4px solid var(--focus-outline);
+            outline-offset: 2px;
+        }
+
+        /* --- HEADER & LOGO CONFIGURATION --- */
+        header {
+            background-color: var(--bg-color);
+            border-bottom: 3px solid var(--border-color);
+            padding: 20px 10px;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .logo-group {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        /* Logo Hierarchies */
+        .logo-steam {
+            max-height: 110px; /* Most prominent */
+            height: auto;
+            width: auto;
+        }
+
+        .logo-aiu {
+            max-height: 55px; /* Secondary prominence */
+            height: auto;
+            width: auto;
+        }
+
+        .logo-transformed {
+            max-height: 45px; /* Tertiary prominence */
+            height: auto;
+            width: auto;
+        }
+
+        /* --- MAIN LAYOUT --- */
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .intro-section {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        h2 {
+            font-size: 1.75rem;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 8px;
+        }
+
+        /* --- INVENTORY GRID --- */
+        .inventory-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .item-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .image-container {
+            width: 100%;
+            height: 200px;
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .item-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.2s ease;
+        }
+
+        .image-link:hover .item-image,
+        .image-link:focus .item-image {
+            transform: scale(1.03);
+        }
+
+        .item-details {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .item-name {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .item-description {
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            flex-grow: 1;
+            color: #4a5568;
+        }
+
+        /* Badges & Statuses */
+        .status-badge {
+            align-self: flex-start;
+            padding: 6px 12px;
+            font-weight: bold;
+            font-size: 0.85rem;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.available {
+            background-color: var(--available-bg);
+            color: var(--available-text);
+        }
+
+        .status-badge.unavailable {
+            background-color: var(--unavailable-bg);
+            color: var(--unavailable-text);
+        }
+
+        .commercial-link {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-decoration: underline;
+            font-size: 0.95rem;
+        }
+
+        /* --- FORM SECTION --- */
+        .form-section {
+            background-color: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .iframe-container {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            padding-top: 100%; /* Keeps Google Form responsive */
+        }
+
+        @media (min-width: 768px) {
+            .iframe-container {
+                padding-top: 75%;
+            }
+        }
+
+        .iframe-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            border-top: 1px solid var(--border-color);
+            margin-top: 60px;
+            font-size: 0.9rem;
+            color: #718096;
+        }
+    </style>
+</head>
+<body>
+
+    <a href="#main-content" style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden;" onfocus="this.style.position='static'; this.style.width='auto'; this.style.height='auto'; margin: 20px; padding: 10px; background: #ffbf47; color: #000; font-weight: bold;">Skip to Main Content</a>
+
+    <header role="banner">
+        <div class="header-container">
+            <div class="logo-group">
+                <img src="Lending Library Logo (1).png" alt="STEAM Lending Library Logo" class="logo-steam">
+                
+                <img src="AIU-logo-Black-2021 copy - Copy.png" alt="Allegheny Intermediate Unit Logo" class="logo-aiu">
+                
+                <img src="TransformED-logo-color.png" alt="transformED Logo" class="logo-transformed">
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content" role="main">
+        <section class="intro-section">
+            <h1>Regional Equipment Lending Library</h1>
+            <p>Browse our available kits and resources below. To request one or more items, review its availability status and fill out the request intake form at the bottom of the page.</p>
+        </section>
+
+        <section aria-label="Current Inventory">
+            <h2>Our Inventory</h2>
+            <div class="inventory-grid">
+
+                <article class="item-card">
+                    <div class="image-container">
+                        <a href="https://www.sphero.com" class="image-link" aria-label="Visit manufacturer website for Sphero BOLT">
+                            <img src="https://placehold.co/400x300?text=Sphero+BOLT" alt="Clear spherical plastic Sphero BOLT robot showing inner matrix lights" class="item-image">
+                        </a>
+                    </div>
+                    <div class="item-details">
+                        <span class="status-badge available">Available</span>
+                        <h3 class="item-name">Sphero BOLT Power Pack</h3>
+                        <p class="item-description">Includes 15 Sphero BOLT robots, inductive charging cradles, and accessories perfect for teaching coding and STEM principles.</p>
+                        <a href="https://www.sphero.com" class="commercial-link" aria-label="Explore technical specs for Sphero BOLT on the official website">Explore Item Details &rarr;</a>
+                    </div>
+                </article>
+                <article class="item-card">
+                    <div class="image-container">
+                        <a href="https://www.3doodler.com" class="image-link" aria-label="Visit manufacturer website for 3Doodler Pen Kit">
+                            <img src="https://placehold.co/400x300?text=3Doodler+Pen" alt="3Doodler printing pen with plastic filaments arrayed around it" class="item-image">
+                        </a>
+                    </div>
+                    <div class="item-details">
+                        <span class="status-badge unavailable">Currently Checked Out</span>
+                        <h3 class="item-name">3Doodler Learning Pack</h3>
+                        <p class="item-description">Contains 12 3D printing pens, student activity guides, and a diverse selection of plastic filament colors.</p>
+                        <a href="https://www.3doodler.com" class="commercial-link" aria-label="Explore technical specs for 3Doodler Learning Pack on the official website">Explore Item Details &rarr;</a>
+                    </div>
+                </article>
+                </div>
+        </section>
+
+        <section class="form-section" id="request-form" aria-label="Lending Request Form">
+            <h2>Submit a Lending Request</h2>
+            <p style="margin-bottom: 20px;">Please complete the secure Google Form below to initiate your request. Our staff will process requests in the order received.</p>
+            
+            <div class="iframe-container">
+                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSfXXXXXXXXXXXXX/viewform?embedded=true" title="Lending Library Request Intake Form">Loading Form…</iframe>
+            </div>
+        </section>
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; 2026 STEAM Lending Library | AIU & transformED. All rights reserved.</p>
+        <p>Built in compliance with WCAG 2.2 AA Accessibility Guidelines.</p>
+    </footer>
+
+</body>
+</html>
